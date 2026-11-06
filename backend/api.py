@@ -18,11 +18,16 @@ from collections import OrderedDict, defaultdict
 from dotenv import load_dotenv
 
 load_dotenv()  # reads backend/.env if present
-
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+if not OPENAI_API_KEY:
+    raise ValueError("Environment variable 'OPENAI_API_KEY' is not set")
 from fastapi import FastAPI, HTTPException, Request  # noqa: E402
 from fastapi.middleware.cors import CORSMiddleware  # noqa: E402
 from langgraph.types import Command  # noqa: E402
 from pydantic import BaseModel  # noqa: E402
+from openai import OpenAI
+
+client = OpenAI(api_key=OPENAI_API_KEY)
 
 from graph import build_graph  # noqa: E402
 from payload import to_payload  # noqa: E402
