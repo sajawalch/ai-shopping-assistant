@@ -1,0 +1,21 @@
+# Render Blueprint: deploys the FastAPI backend. Set OPENAI_API_KEY in the dashboard.
+services:
+  - type: web
+    name: sahipick-api
+    runtime: python
+    rootDir: backend
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn api:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /api/health
+    envVars:
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: TAVILY_API_KEY
+        sync: false
+      - key: SHOPPING_MODEL
+        value: gpt-4o-mini
+      - key: ALLOWED_ORIGINS
+        sync: false
+      - key: PYTHON_VERSION
+        value: 3.11.9
